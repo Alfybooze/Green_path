@@ -1,0 +1,71 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  application:
+    name: GreenPath
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Test
+    username: Alfred
+    driver-class-name: org.postgresql.Driver
+    password: alfybooze
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+  # JPA/Hibernate Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # Options: create, create-drop, update, validate, none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  # Thymeleaf Configuration
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false # Set to true in production
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+
+
+  # Session Configuration
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+      cleanup-cron: "0 * * * * *"
+    timeout: 30m
+    cookie:
+      name: JSESSIONID
+      max-age: 30m
+      http-only: true
+      secure: false # Set to true in production with HTTPS
+      same-site: lax
+
+  # WebSocket Configuration
+  websocket:
+    allowed-origins: "*" # Configure appropriately for production
+    
+

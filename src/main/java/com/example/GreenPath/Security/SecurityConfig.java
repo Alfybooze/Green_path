@@ -1,12 +1,12 @@
 package com.example.GreenPath.Security;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,8 +18,10 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.sql.DataSource;
 
@@ -42,22 +44,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(authz -> authz
-                // Public endpoints
-                .requestMatchers("/", "/home", "/login", "/register", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
-                .requestMatchers("/h2-console/**").permitAll() // Remove in production
-                
-                // Role-based access
-                .requestMatchers("/farmer/**").hasRole("FARMER")
-                .requestMatchers("/herder/**").hasRole("HERDER")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                
-                // WebSocket endpoints
-                .requestMatchers("/ws/**").authenticated()
-                
-                // All other requests require authentication
-                .anyRequest().authenticated()
-            )
+        .authorizeHttpRequests(authz -> authz
+            // Static resources first
+            .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+            // Public endpoints
+            .requestMatchers("/", "/login", "/signup", "/user/signup").permitAll()
+            // Role-based access
+            .requestMatchers("/farmer/**").hasRole("FARMER")
+            .requestMatchers("/herder/**").hasRole("HERDER")
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            // WebSocket endpoints
+            .requestMatchers("/ws/**").authenticated()
+            // All other requests require authentication
+            .anyRequest().authenticated()
+        )
             
             // Form login configuration
             .formLogin(form -> form
@@ -70,12 +70,12 @@ public class SecurityConfig {
                 .permitAll()
             )
             
-            // Remember Me configuration
+            // Remember Me configuration - Spring will auto-detect UserDetailsService
             .rememberMe(remember -> remember
                 .key(rememberMeKey)
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(rememberMeTokenValiditySeconds)
-                .userDetailsService(userDetailsService()) // You'll need to implement this
+                // Removed explicit userDetailsService - Spring will find your @Service automatically
                 .rememberMeParameter("remember-me")
                 .rememberMeCookieName("remember-me-cookie")
             )
@@ -115,17 +115,17 @@ public class SecurityConfig {
 
         return http.build();
     }
-
+ 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
-        tokenRepository.setCreateTableOnStartup(true); // Set to false after first run
+        tokenRepository.setCreateTableOnStartup(false); // Set to false after first run
         return tokenRepository;
     }
 
@@ -139,13 +139,6 @@ public class SecurityConfig {
         return new org.springframework.security.core.session.SessionRegistryImpl();
     }
 
-    // You'll need to implement this service
-    @Bean
-    public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
-        // This should return your custom UserDetailsService implementation
-        // that loads User entities from your database
-        throw new UnsupportedOperationException("Implement CustomUserDetailsService");
-    }
 
     // Custom success handler to redirect based on user type
    public static class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -158,26 +151,59 @@ public class SecurityConfig {
 
         // Read the selected role from login form
         String chosenRole = request.getParameter("role");
-
-        // Check if the user actually has that role
-        boolean hasRole = authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals(chosenRole));
-
+        
+        // Get user's actual roles from Spring Security
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        
         String targetUrl;
-        if (hasRole) {
-            targetUrl = switch (chosenRole) {
-                case "ROLE_FARMER" -> "/farmer/dashboard";
-                case "ROLE_HERDER" -> "/herder/dashboard";
-                case "ROLE_ADMIN" -> "/admin/dashboard";
-                default -> "/dashboard";
-            };
+        
+        if (chosenRole != null && !chosenRole.isEmpty()) {
+            // Convert role to Spring Security format if needed
+            String roleWithPrefix = chosenRole.startsWith("ROLE_") ? chosenRole : "ROLE_" + chosenRole.toUpperCase();
+            
+            // Check if the user actually has that role
+            boolean hasRole = authorities.stream()
+                    .anyMatch(auth -> auth.getAuthority().equals(roleWithPrefix));
+
+            if (hasRole) {
+                // User has the chosen role, redirect accordingly
+                targetUrl = switch (roleWithPrefix) {
+                    case "ROLE_FARMER" -> "/farmer/dashboard";
+                    case "ROLE_HERDER" -> "/herder/dashboard"; 
+                    case "ROLE_ADMIN" -> "/admin/dashboard";
+                    default -> "/dashboard";
+                };
+            } else {
+                // User doesn't have the chosen role, redirect to error or default
+                targetUrl = "/login?error=invalid_role";
+            }
         } else {
-            // Fallback if the chosen role isn't valid
-            targetUrl = "/dashboard";
+            // No role specified, determine based on user's highest privilege role
+            targetUrl = determineDefaultRedirectUrl(authorities);
         }
 
-        // Redirect
+        // Store the chosen role in session for later use if needed
+        HttpSession session = request.getSession();
+        session.setAttribute("currentRole", chosenRole);
+
+        // Redirect to target URL
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
+    
+    /**
+     * Determines default redirect URL based on user's roles when no specific role is chosen
+     */
+    private String determineDefaultRedirectUrl(Collection<? extends GrantedAuthority> authorities) {
+        // Priority order: ADMIN > FARMER > HERDER
+        if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+            return "/admin/dashboard";
+        } else if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_FARMER"))) {
+            return "/farmer/dashboard";
+        } else if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_HERDER"))) {
+            return "/herder/dashboard";
+        } else {
+            return "/dashboard";
+        }
     }
 }
 

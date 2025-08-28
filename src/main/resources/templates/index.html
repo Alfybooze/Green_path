@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Path - Bridging Communities, Growing Together</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+     <!-- Include the CesiumJS JavaScript and CSS files -->
+   <script src="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Cesium.js"></script>
+   <link href="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark-glass fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="#" id="brandLogo">
+                <i class="fas fa-leaf text-warning me-2"></i>Green Path
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#how-it-works">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#marketplace">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#testimonials">Stories</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-warning text-dark fw-bold px-4 cta-button" href="#signup">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-animation"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-100 pt-5">
+                <div class="col-lg-6">
+                    <h1 class="display-3 fw-bold text-white mb-4 hero-title" style="display: none;">
+                        Bridging Communities, <span class="text-warning glow">Growing Together</span>
+                    </h1>
+                    <p class="lead text-white mb-4 fade-in-up" style="animation-delay: 0.2s;">
+                        Connect farmers and herders across Nigeria through smart land mapping, route planning,
+                        and resource sharing. Build harmony, reduce conflicts, and create prosperity for all.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-4 fade-in-up" style="animation-delay: 0.4s;">
+                        <a href="#signup" class="btn btn-warning btn-lg px-5 fw-bold text-dark pulse-button">
+                            <i class="fas fa-rocket me-2"></i>Start For Free
+                        </a>
+                        <button class="btn btn-outline-light btn-lg px-5 fw-bold hover-glow" data-bs-toggle="modal"
+                            data-bs-target="#videoModal">
+                            <i class="fas fa-play me-2"></i>Watch Demo
+                        </button>
+                    </div>
+                    <div class="hero-stats text-white fade-in-up" style="animation-delay: 0.6s;">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h3 class="fw-bold counter" data-target="500">0</h3>
+                                <small>Active Farmers</small>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="fw-bold counter" data-target="200">0</h3>
+                                <small>Herder Groups</small>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="fw-bold counter" data-target="98">0</h3>
+                                <small>% Conflict Reduction</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image-placeholder floating">
+                        <div class="image-overlay">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <p>Interactive Map Preview</p>
+                            <small>Farmers & Herders Live Tracking</small>
+                        </div>
+                        <div class="map-dots">
+                            <div class="dot farmer-dot"></div>
+                            <div class="dot herder-dot"></div>
+                            <div class="dot farmer-dot"></div>
+                            <div class="dot herder-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-4 fw-bold mb-4 section-title">Powerful Features for Peaceful Coexistence</h2>
+                    <p class="lead">Our platform combines technology with traditional wisdom to create lasting solutions
+                    </p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="feature-card h-100 card-hover">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-pin"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Smart Land Mapping</h4>
+                        <p>Farmers can mark and highlight important farmland areas. All users can see marked territories
+                            in real-time, preventing accidental grazing on crops.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>GPS-accurate
+                                boundaries</li>
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Crop type indicators
+                            </li>
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Harvest timeline
+                                alerts</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card h-100 card-hover">
+                        <div class="feature-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Grazing Route Planning</h4>
+                        <p>Herders can mark safe grazing routes and schedules. Share movement plans with the community
+                            to avoid conflicts and find the best pastures.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Seasonal route
+                                optimization</li>
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Water point locations
+                            </li>
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Community
+                                notifications</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card h-100 card-hover">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Direct Communication</h4>
+                        <p>When conflicts arise, users can message each other directly. Resolve issues through dialogue
+                            before they escalate to violence.</p>
+                        <ul class="list-unstyled mt-3">
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Instant messaging
+                                system</li>
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Conflict resolution
+                                tools</li>
+                            <li class="feature-item"><i class="fas fa-check text-success me-2"></i>Community mediators
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-4 fw-bold mb-4 section-title">How It Works</h2>
+                    <p class="lead">Simple steps to transform your community</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <div class="step-card text-center step-animation" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h5 class="fw-bold">Sign Up</h5>
+                        <p>Register as a farmer or herder and verify your identity with community leaders</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="step-card text-center step-animation" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-map"></i>
+                        </div>
+                        <h5 class="fw-bold">Mark Your Territory</h5>
+                        <p>Use GPS to mark your farmland or plan your grazing routes on our interactive map</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="step-card text-center step-animation" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h5 class="fw-bold">Stay Informed</h5>
+                        <p>View real-time updates of farming activities and herding movements in your area</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="step-card text-center step-animation" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-icon mb-3">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h5 class="fw-bold">Connect & Trade</h5>
+                        <p>Communicate directly and trade resources through our secure marketplace</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section id="marketplace" class="py-5 bg-primary text-white marketplace-gradient">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-4 fw-bold mb-4 section-title">Resource Marketplace</h2>
+                    <p class="lead mb-4">Turn potential conflicts into profitable partnerships. Trade resources, share
+                        knowledge, and build lasting relationships.</p>
+
+                    <div class="marketplace-features">
+                        <div class="d-flex align-items-start mb-3 feature-item">
+                            <div class="feature-icon-small me-3">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Grazing Land Exchange</h6>
+                                <small>Farmers offer post-harvest fields for grazing in exchange for natural
+                                    fertilizer</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3 feature-item">
+                            <div class="feature-icon-small me-3">
+                                <i class="fas fa-cow"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Organic Fertilizer Trade</h6>
+                                <small>Herders provide quality animal waste to boost crop yields naturally</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3 feature-item">
+                            <div class="feature-icon-small me-3">
+                                <i class="fas fa-water"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold">Water & Feed Sharing</h6>
+                                <small>Coordinate access to water sources and surplus animal feed</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#signup" class="btn btn-warning btn-lg px-5 fw-bold text-dark mt-4 pulse-button">
+                        <i class="fas fa-store me-2"></i>Explore Marketplace
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="marketplace-image-placeholder floating">
+                        <div class="image-overlay">
+                            <i class="fas fa-store"></i>
+                            <p>Marketplace Interface</p>
+                            <small>Resource Trading Platform</small>
+                        </div>
+                        <div class="trading-icons">
+                            <div class="trading-icon"><i class="fas fa-seedling"></i></div>
+                            <div class="trading-icon"><i class="fas fa-cow"></i></div>
+                            <div class="trading-icon"><i class="fas fa-water"></i></div>
+                            <div class="trading-icon"><i class="fas fa-wheat"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Carousel -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-4 fw-bold mb-4 section-title">Success Stories Across Nigeria</h2>
+                    <p class="lead">See how communities are transforming conflicts into collaborations</p>
+                </div>
+            </div>
+            <div id="successCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel"
+                data-bs-interval="5000">
+                <div class="carousel-indicators custom-indicators">
+                    <button type="button" data-bs-target="#successCarousel" data-bs-slide-to="0"
+                        class="active"></button>
+                    <button type="button" data-bs-target="#successCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#successCarousel" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="carousel-image-placeholder">
+                                    <div class="image-overlay">
+                                        <i class="fas fa-users"></i>
+                                        <p>Kaduna Community Success</p>
+                                        <small>Farmers and Herders Working Together</small>
+                                    </div>
+                                    <div class="success-badge">90% Reduction</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="fw-bold mb-3">Kaduna State: 90% Conflict Reduction</h3>
+                                <p class="lead">In just 6 months, communities in Kaduna saw a dramatic decrease in
+                                    farmer-herder conflicts through coordinated land use and direct communication.</p>
+                                <blockquote class="blockquote custom-quote">
+                                    <p>"This platform saved our community. We now work together instead of fighting."
+                                    </p>
+                                    <footer class="blockquote-footer">Mallam Ibrahim, <cite title="Source Title">Herder
+                                            Representative</cite></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="carousel-image-placeholder">
+                                    <div class="image-overlay">
+                                        <i class="fas fa-chart-line"></i>
+                                        <p>Plateau Economic Growth</p>
+                                        <small>Resource Trading Success</small>
+                                    </div>
+                                    <div class="success-badge">150% Income</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="fw-bold mb-3">Plateau State: 150% Income Increase</h3>
+                                <p class="lead">Farmers and herders in Plateau State increased their income through
+                                    resource sharing and coordinated agricultural practices.</p>
+                                <blockquote class="blockquote custom-quote">
+                                    <p>"The marketplace changed everything. My crops yield doubled with organic
+                                        fertilizer."</p>
+                                    <footer class="blockquote-footer">Mrs. Grace Aluko, <cite
+                                            title="Source Title">Farmer</cite></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="carousel-image-placeholder">
+                                    <div class="image-overlay">
+                                        <i class="fas fa-globe-africa"></i>
+                                        <p>National Impact</p>
+                                        <small>Expanding Across Nigeria</small>
+                                    </div>
+                                    <div class="success-badge">12 States</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3 class="fw-bold mb-3">Nationwide: 12 States Connected</h3>
+                                <p class="lead">Green Path is now active in 12 Nigerian states, connecting thousands of
+                                    farmers and herders for peaceful coexistence.</p>
+                                <blockquote class="blockquote custom-quote">
+                                    <p>"This technology is bringing peace to rural Nigeria, one community at a time."
+                                    </p>
+                                    <footer class="blockquote-footer">Dr. Aminu Hassan, <cite
+                                            title="Source Title">Agricultural Extension Officer</cite></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev custom-carousel-control" type="button"
+                    data-bs-target="#successCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next custom-carousel-control" type="button"
+                    data-bs-target="#successCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-4 fw-bold mb-4 section-title">What Our Community Says</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="testimonial-card h-100 card-hover">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning star-animation"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.1s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.2s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.3s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.4s;"></i>
+                        </div>
+                        <p class="mb-4">"Before Green Path, we had constant problems with cattle destroying our crops.
+                            Now we plan together and everyone benefits."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-placeholder me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Fatima Mohammed</h6>
+                                <small class="text-muted">Rice Farmer, Kebbi State</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-card h-100 card-hover">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning star-animation"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.1s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.2s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.3s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.4s;"></i>
+                        </div>
+                        <p class="mb-4">"The messaging system helped us resolve disputes peacefully. We can communicate
+                            directly instead of through intermediaries."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-placeholder me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Audu Garba</h6>
+                                <small class="text-muted">Cattle Herder, Adamawa State</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-card h-100 card-hover">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning star-animation"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.1s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.2s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.3s;"></i>
+                            <i class="fas fa-star text-warning star-animation" style="animation-delay: 0.4s;"></i>
+                        </div>
+                        <p class="mb-4">"The marketplace is fantastic! I now sell my excess feed to herders and buy
+                            organic fertilizer at fair prices."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-placeholder me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Chief Emeka Okafor</h6>
+                                <small class="text-muted">Yam Farmer, Benue State</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section id="signup" class="py-5 bg-primary text-white cta-gradient">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-3 fw-bold mb-4 glow">Join the Movement for Peace</h2>
+                    <p class="lead mb-5">Start building bridges in your community today. It's free to join and takes
+                        less than 2 minutes to get started.</p>
+
+                    <div class="row g-3 justify-content-center mb-5">
+                        <div class="col-lg-4">
+                            <a href="#"
+                                class="btn btn-warning btn-lg w-100 py-3 fw-bold text-dark signup-btn card-hover">
+                                <i class="fas fa-seedling me-2"></i>I'm a Farmer
+                            </a>
+                        </div>
+                        <div class="col-lg-4">
+                            <a href="#"
+                                class="btn btn-warning btn-lg w-100 py-3 fw-bold text-dark signup-btn card-hover">
+                                <i class="fas fa-horse me-2"></i>I'm a Herder
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="trust-indicators">
+                        <p class="mb-3"><i class="fas fa-shield-alt me-2 glow"></i>Trusted by 700+ farmers and herders
+                            across Nigeria</p>
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
+                            <small class="trust-badge"><i class="fas fa-check me-2"></i>100% Free to Use</small>
+                            <small class="trust-badge"><i class="fas fa-check me-2"></i>SMS Support Available</small>
+                            <small class="trust-badge"><i class="fas fa-check me-2"></i>Community Verified</small>
+                            <small class="trust-badge"><i class="fas fa-check me-2"></i>Local Language Support</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/Footer -->
+    <footer id="contact" class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h3 class="fw-bold mb-4">
+                        <i class="fas fa-leaf text-warning me-2"></i>Green Path
+                    </h3>
+                    <p class="mb-4">Bridging the gap between farmers and herders across Nigeria through technology,
+                        communication, and mutual respect.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3 social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3 social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3 social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3 social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="fw-bold mb-3">Platform</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Features</a></li>
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Marketplace</a></li>
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Mobile App</a></li>
+                        <li><a href="#" class="text-light text-decoration-none footer-link">API</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="fw-bold mb-3">Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Help Center</a></li>
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Community</a></li>
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Training</a></li>
+                        <li><a href="#" class="text-light text-decoration-none footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">Get In Touch</h5>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone me-2"></i>+234 800 GREENPATH</p>
+                        <p><i class="fas fa-envelope me-2"></i>hello@greenpath.ng</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i>Abuja, Nigeria</p>
+                    </div>
+                    <div class="mt-4">
+                        <h6 class="fw-bold">Available in Local Languages:</h6>
+                        <small class="text-muted">English • Hausa • Yoruba • Igbo • Fulfulde</small>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <p class="mb-0">&copy; 2025 Green Path. All rights reserved.</p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <a href="#" class="text-light text-decoration-none me-3 footer-link">Privacy Policy</a>
+                    <a href="#" class="text-light text-decoration-none footer-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="videoModalLabel">Green Path Demo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="video-placeholder mb-3">
+                        <i class="fas fa-play-circle display-1 text-warning"></i>
+                        <p class="mt-3">Demo video will play here</p>
+                        <small class="text-muted">Shows platform features and success stories</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script th:src="@{/js/index.js}"></script>
+
+</body>
+</html>

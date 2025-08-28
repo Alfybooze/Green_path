@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.GreenPath.Model.User;
 import com.example.GreenPath.Model.UserType;
@@ -14,18 +13,10 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class WebController {
-
-
-
     // Home/Landing page
     @GetMapping("/")
-    public String home() {
-        return "home";
-    }
-
-    @GetMapping("/home")
-    public String landing() {
-        return "home";
+    public String homepage() {
+        return "index";
     }
 
     // Login page
@@ -34,8 +25,6 @@ public class WebController {
         model.addAttribute("user", new User());
         return "login";
     }
-
-
 
     // Signup page
     @GetMapping("/signup")
@@ -88,14 +77,6 @@ public class WebController {
         model.addAttribute("user", loggedInUser);
         model.addAttribute("role", loggedInUser.getUserType().getDisplayName());
         return "herder/dashboard";
-    }
-
-    // Logout
-   @GetMapping("/logout")
-    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
-        session.invalidate();
-        redirectAttributes.addFlashAttribute("success", "You have been logged out successfully");
-        return "redirect:/home";
     }
 
     // Profile page

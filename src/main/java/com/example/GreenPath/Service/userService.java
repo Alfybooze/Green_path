@@ -92,7 +92,7 @@ public class userService implements UserDetailsService {
             user.setUpdatedAt(LocalDateTime.now());
 
             return userRepository.save(user);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to save user: " + e.getMessage(), e);
         }
     }
@@ -136,7 +136,7 @@ public class userService implements UserDetailsService {
             } else {
                 throw new RuntimeException("User not found with ID: " + user.getId());
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to update user: " + e.getMessage(), e);
         }
     }
@@ -176,7 +176,7 @@ public class userService implements UserDetailsService {
             } else {
                 throw new RuntimeException("User not found with ID: " + userId);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to change user role: " + e.getMessage(), e);
         }
     }
@@ -194,7 +194,7 @@ public class userService implements UserDetailsService {
             } else {
                 throw new RuntimeException("User not found with ID: " + userId);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to toggle user status: " + e.getMessage(), e);
         }
     }
@@ -212,7 +212,7 @@ public class userService implements UserDetailsService {
             } else {
                 throw new RuntimeException("User not found with ID: " + userId);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to verify user: " + e.getMessage(), e);
         }
     }
@@ -310,7 +310,7 @@ public class userService implements UserDetailsService {
             } else {
                 throw new RuntimeException("User not found with ID: " + userId);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Failed to update profile image: " + e.getMessage(), e);
         }
     }

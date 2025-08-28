@@ -93,44 +93,6 @@ public class User_Controller {
             return "redirect:/signup";
         }
     }
-       @PostMapping("/login")
-    public String processLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,
-                              @RequestParam("role") String role,
-                              HttpSession session, 
-                              RedirectAttributes redirectAttributes) {
-        try {
-            // Convert string role to UserType enum
-            UserType userType;
-            try {
-                userType = UserType.valueOf(role.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                redirectAttributes.addFlashAttribute("error", "Invalid role selected");
-                return "redirect:/login";
-            }
-            
-            User authenticatedUser = userService.authenticateWithRole(username, password, userType);
-            
-            if (authenticatedUser != null) {
-                session.setAttribute("loggedInUser", authenticatedUser);
-                session.setAttribute("userId", authenticatedUser.getId());
-                session.setAttribute("userRole", authenticatedUser.getUserType().name().toLowerCase());
-                
-                // Redirect based on userType
-                return switch (authenticatedUser.getUserType()) {
-                    case FARMER -> "redirect:/farmer/dashboard";
-                    case HERDER -> "redirect:/herder/dashboard";
-                    default -> "redirect:/dashboard";
-                };
-            } else {
-                redirectAttributes.addFlashAttribute("error", "Invalid username, password, or role");
-                return "redirect:/login";
-            }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Login failed. Please try again.");
-            return "redirect:/login";
-        }
-    }
        @PostMapping("/profile/update")
     public String updateProfile(@ModelAttribute("user") User user, 
                                HttpSession session, 

@@ -8,9 +8,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/index.css}">
-     <!-- Include the CesiumJS JavaScript and CSS files -->
-   <script src="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Cesium.js"></script>
-   <link href="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <!-- Include the CesiumJS JavaScript and CSS files -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 
 </head>
 
@@ -18,7 +18,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark-glass fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="#" id="brandLogo">
+            <a class="navbar-brand fw-bold fs-3 text-warning glow" href="#" id="brandLogo">
                 <i class="fas fa-leaf text-warning me-2"></i>Green Path
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -26,11 +26,16 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#how-it-works">How It Works</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#marketplace">Marketplace</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#testimonials">Stories</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-scroll" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll text-warning glow"
+                            href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll text-warning glow" href="#how-it-works">How It
+                            Works</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll text-warning glow"
+                            href="#marketplace">Marketplace</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll text-warning glow"
+                            href="#testimonials">Stories</a></li>
+                    <li class="nav-item"><a class="nav-link smooth-scroll text-warning glow" href="#contact">Contact</a>
+                    </li>
                     <li class="nav-item ms-2">
                         <a class="btn btn-warning text-dark fw-bold px-4 cta-button" href="#signup">Get Started</a>
                     </li>
@@ -64,15 +69,15 @@
                     <div class="hero-stats text-white fade-in-up" style="animation-delay: 0.6s;">
                         <div class="row text-center">
                             <div class="col-4">
-                                <h3 class="fw-bold counter" data-target="500">0</h3>
+                                <h3 class="fw-bold counter" data-target="0">0</h3>
                                 <small>Active Farmers</small>
                             </div>
                             <div class="col-4">
-                                <h3 class="fw-bold counter" data-target="200">0</h3>
+                                <h3 class="fw-bold counter" data-target="0">0</h3>
                                 <small>Herder Groups</small>
                             </div>
                             <div class="col-4">
-                                <h3 class="fw-bold counter" data-target="98">0</h3>
+                                <h3 class="fw-bold counter" data-target="0">0</h3>
                                 <small>% Conflict Reduction</small>
                             </div>
                         </div>
@@ -96,6 +101,7 @@
             </div>
         </div>
     </section>
+    <!-- Cesium Map Modal -->
 
     <!-- Features Section -->
     <section id="features" class="py-5 bg-light">
@@ -587,7 +593,57 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg-custom modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="mapModalLabel">
+                        <i class="fas fa-map-marked-alt me-2 text-success"></i>
+                        Green Path Coverage Areas
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 position-relative">
+                    <div id="cesiumContainer"></div>
+                    <div class="state-info">
+                        <h6 class="text-success fw-bold mb-2">
+                            <i class="fas fa-leaf me-2"></i>Active Coverage Areas
+                        </h6>
+                        <p class="mb-2 small">Green Path is currently serving farmers and herders in these key
+                            agricultural regions of Nigeria:</p>
+                        <ul class="list-unstyled mb-0 small">
+                            <li><i class="fas fa-map-pin text-warning me-2"></i>Benue State</li>
+                            <li><i class="fas fa-map-pin text-warning me-2"></i>Plateau State</li>
+                            <li><i class="fas fa-map-pin text-warning me-2"></i>Adamawa State</li>
+                            <li><i class="fas fa-map-pin text-warning me-2"></i>Nasarawa State</li>
+                            <li><i class="fas fa-map-pin text-warning me-2"></i>Taraba State</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <div class="state-stats w-100">
+                        <div class="stat-item">
+                            <h6 class="text-success mb-1">0</h6>
+                            <small>Active Farmers</small>
+                        </div>
+                        <div class="stat-item">
+                            <h6 class="text-success mb-1">0</h6>
+                            <small>Herder Groups</small>
+                        </div>
+                        <div class="stat-item">
+                            <h6 class="text-success mb-1">0</h6>
+                            <small>Coverage States</small>
+                        </div>
+                        <div class="stat-item">
+                            <h6 class="text-success mb-1">0%</h6>
+                            <small>Conflict Reduction</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
@@ -595,4 +651,5 @@
     <script th:src="@{/js/index.js}"></script>
 
 </body>
+
 </html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Farming Community</title>
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <script th:src="@{/js/auth-validation.js}"></script>
+</head>
+
+<body class="signup-bg">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join our farming community</p>
+        </div>
+        <div class="form-container">
+            <div class="success-message" id="signupSuccess"></div>
+            <form id="signupForm" novalidate th:action="@{/user/signup}" method="post"> 
+                <!-- Optional Username field - remove if not needed -->
+                <!-- <div class="form-group" style="display: none;">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" name="username">
+                    <div class="error-message" id="signupUsernameError"></div>
+                </div> -->
+
+                <div class="form-group">
+                    <label for="signupFirstName">First Name</label>
+                    <input type="text" id="signupFirstName" name="firstName" required>
+                    <div class="error-message" id="signupFirstNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupLastName">Last Name</label>
+                    <input type="text" id="signupLastName" name="lastName" required>
+                    <div class="error-message" id="signupLastNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                    <div class="error-message" id="signupEmailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupPhone">Phone Number</label>
+                    <input type="tel" id="signupPhone" name="phone" required pattern="[0-9]{10,15}">
+                    <div class="error-message" id="signupPhoneError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" required minlength="6">
+                    <div class="error-message" id="signupPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Role</label>
+                    <div class="role-selection">
+                        <div class="role-option">
+                            <input type="radio" id="signupFarmer" name="role" value="farmer" required>
+                            <label for="signupFarmer" class="role-label">
+                                <span class="role-icon">🌾</span>
+                                Farmer
+                            </label>
+                        </div>
+                        <div class="role-option">
+                            <input type="radio" id="signupHerder" name="role" value="herder" required>
+                            <label for="signupHerder" class="role-label">
+                                <span class="role-icon">🐄</span>
+                                Herder
+                            </label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="signupRoleError"></div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+            </form>
+
+            <div class="switch-form">
+                <p>Already have an account? <a href="/login">Sign in here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Verification Modal -->
+    <!-- ...existing code... -->
+
+<!-- Add Verification Modal (full markup required by auth-validation.js) -->
+<div class="verification-modal" id="verificationModal" aria-hidden="true" role="dialog" aria-labelledby="verificationTitle">
+    <div class="modal-wrapper">
+        <div class="modal-box">
+            <div id="verificationContent">
+                <h3 id="verificationTitle">Verify Your Email</h3>
+                <p>We've sent a verification code to <strong id="emailDisplay"></strong></p>
+
+                <div class="verification-input">
+                    <input id="verificationCode" type="text" inputmode="numeric" pattern="\d*" maxlength="6" placeholder="Enter 6‑digit code" autocomplete="one-time-code" />
+                    <div class="error-message" id="verificationError"></div>
+                </div>
+
+                <div class="verification-actions">
+                    <button type="button" class="submit-btn" id="verifyBtn">Verify Code</button>
+                    <button type="button" class="secondary-btn" id="resendBtn">Resend Code</button>
+                    <button type="button" class="text-btn" id="cancelBtn">Cancel</button>
+                </div>
+
+                <p id="timer" class="timer-text"></p>
+            </div>
+
+            <div id="successContent" style="display: none;">
+                <div class="success-animation"><i class="fas fa-check-circle"></i></div>
+                <h3>Email Verified!</h3>
+                <p>Redirecting to login...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ...existing code... -->
+</body>
+
+</html>

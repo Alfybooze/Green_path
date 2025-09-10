@@ -1,5 +1,8 @@
-// Green Path Interactive JavaScript
+// Green Path Interactive JavaScript - Optimized Version
 document.addEventListener('DOMContentLoaded', function () {
+    // Global variables
+    let viewer = null;
+    let isMapInitialized = false;
 
     // Smooth scrolling for navigation links
     const smoothScrollLinks = document.querySelectorAll('.smooth-scroll');
@@ -134,75 +137,73 @@ document.addEventListener('DOMContentLoaded', function () {
     const heroTitle = document.querySelector('.hero-title');
     const leadText = document.querySelector('.lead');
 
-    if (heroTitle && leadText) {
-        function typewriterEffectAdvanced() {
-            console.log('🚀 Starting typewriter effect triggered by lead text');
+    function typewriterEffectAdvanced() {
+        console.log('Starting typewriter effect');
 
-            const originalHTML = heroTitle.innerHTML;
+        const originalHTML = heroTitle.innerHTML;
 
-            // Make element visible AND opaque
-            heroTitle.style.display = 'block';
-            heroTitle.style.opacity = '1';
+        // Make element visible AND opaque
+        heroTitle.style.display = 'block';
+        heroTitle.style.opacity = '1';
 
-            heroTitle.innerHTML = '<span class="typewriter-cursor" style="border-right: 3px solid #ffc107; animation: blink 1s infinite;"></span>';
+        heroTitle.innerHTML = '<span class="typewriter-cursor" style="border-right: 3px solid #ffc107; animation: blink 1s infinite;"></span>';
 
-            // Convert HTML to array of characters and tags
-            const htmlArray = [];
-            let tempDiv = document.createElement('div');
-            tempDiv.innerHTML = originalHTML;
+        // Convert HTML to array of characters and tags
+        const htmlArray = [];
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = originalHTML;
 
-            function parseNode(node) {
-                if (node.nodeType === 3) { // Text node
-                    for (let char of node.textContent) {
-                        htmlArray.push({ type: 'char', content: char });
-                    }
-                } else if (node.nodeType === 1) { // Element node
-                    htmlArray.push({ type: 'openTag', content: node.outerHTML.split('>')[0] + '>' });
-                    for (let child of node.childNodes) {
-                        parseNode(child);
-                    }
-                    htmlArray.push({ type: 'closeTag', content: `</${node.tagName.toLowerCase()}>` });
+        function parseNode(node) {
+            if (node.nodeType === 3) { // Text node
+                for (let char of node.textContent) {
+                    htmlArray.push({ type: 'char', content: char });
                 }
-            }
-
-            for (let child of tempDiv.childNodes) {
-                parseNode(child);
-            }
-
-            let index = 0;
-            let currentHTML = '';
-
-            function typeNext() {
-                if (index < htmlArray.length) {
-                    const current = htmlArray[index];
-
-                    if (current.type === 'char') {
-                        currentHTML += current.content;
-                        heroTitle.innerHTML = currentHTML + '<span class="typewriter-cursor" style="border-right: 3px solid #ffc107; animation: blink 1s infinite;"></span>';
-                        setTimeout(typeNext, 50); // Character delay
-                    } else {
-                        // Add tags instantly
-                        currentHTML += current.content;
-                        setTimeout(typeNext, 0);
-                    }
-
-                    index++;
-                } else {
-                    // Remove cursor
-                    heroTitle.innerHTML = currentHTML;
-                    console.log('✅ Typewriter effect completed');
+            } else if (node.nodeType === 1) { // Element node
+                htmlArray.push({ type: 'openTag', content: node.outerHTML.split('>')[0] + '>' });
+                for (let child of node.childNodes) {
+                    parseNode(child);
                 }
+                htmlArray.push({ type: 'closeTag', content: `</${node.tagName.toLowerCase()}>` });
             }
-
-            typeNext();
         }
 
-        // Watch the lead text instead of the hero title
+        for (let child of tempDiv.childNodes) {
+            parseNode(child);
+        }
+
+        let index = 0;
+        let currentHTML = '';
+
+        function typeNext() {
+            if (index < htmlArray.length) {
+                const current = htmlArray[index];
+
+                if (current.type === 'char') {
+                    currentHTML += current.content;
+                    heroTitle.innerHTML = currentHTML + '<span class="typewriter-cursor" style="border-right: 3px solid #ffc107; animation: blink 1s infinite;"></span>';
+                    setTimeout(typeNext, 50); // Character delay
+                } else {
+                    // Add tags instantly
+                    currentHTML += current.content;
+                    setTimeout(typeNext, 0);
+                }
+
+                index++;
+            } else {
+                // Remove cursor
+                heroTitle.innerHTML = currentHTML;
+                console.log('Typewriter effect completed');
+            }
+        }
+
+        typeNext();
+    }
+
+    if (heroTitle && leadText) {
+        // Watch the lead text for intersection
         const leadTextObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                console.log('Lead text intersection observed:', entry.isIntersecting);
                 if (entry.isIntersecting) {
-                    console.log('Lead text visible! Starting typewriter in 300ms...');
                     setTimeout(typewriterEffectAdvanced, 300);
                     leadTextObserver.unobserve(entry.target);
                 }
@@ -213,22 +214,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         leadTextObserver.observe(leadText);
-
-    } else {
-        console.error('Hero title or lead text not found');
-        console.log('Hero title:', !!heroTitle);
-        console.log('Lead text:', !!leadText);
-    }
-
-    // Alternative: Use the hero section container as trigger
-    if (heroSection && heroTitle && !leadText) {
-        console.log('Using hero section as fallback trigger');
-
+    } else if (heroSection && heroTitle && !leadText) {
+        // Fallback to hero section
         const heroSectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                console.log('Hero section intersection observed:', entry.isIntersecting);
                 if (entry.isIntersecting) {
-                    console.log('Hero section visible! Starting typewriter...');
                     setTimeout(typewriterEffectAdvanced, 500);
                     heroSectionObserver.unobserve(entry.target);
                 }
@@ -244,10 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Emergency fallback - trigger on page load after delay
     setTimeout(() => {
         if (heroTitle && heroTitle.style.display === 'none') {
-            console.log('🆘 Fallback trigger - no intersection detected, starting typewriter anyway');
-            if (typeof typewriterEffectAdvanced === 'function') {
-                typewriterEffectAdvanced();
-            }
+            console.log('Fallback trigger - starting typewriter anyway');
+            typewriterEffectAdvanced();
         }
     }, 3000);
 
@@ -293,13 +281,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 tooltip.remove();
             }
         });
-    });
-    mapDots.forEach(dot => {
+
+        // Add click handler for modal
         dot.addEventListener('click', function () {
-            // Create and show the 3D map modal
             createAndShowMapModal();
         });
     });
+
+    // Create and show map modal function
     function createAndShowMapModal() {
         // Remove existing modal if it exists
         const existingModal = document.querySelector('#mapModal');
@@ -342,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <small>Coverage States</small>
                             </div>
                             <div class="text-center">
-                                <h6 class="text-success mb-1">98%</h6>
+                                <h6 class="text-success mb-1">0%</h6>
                                 <small>Conflict Reduction</small>
                             </div>
                         </div>
@@ -360,9 +349,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Initialize Cesium when modal is shown
         document.getElementById('mapModal').addEventListener('shown.bs.modal', function () {
-            if (typeof Cesium !== 'undefined') {
+            if (typeof Cesium !== 'undefined' && !isMapInitialized) {
                 initializeCesiumMap();
-            } else {
+                isMapInitialized = true;
+            } else if (typeof Cesium === 'undefined') {
                 console.warn('Cesium library not loaded. Showing fallback map.');
                 showFallbackMap();
             }
@@ -370,18 +360,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Clean up when modal is closed
         document.getElementById('mapModal').addEventListener('hidden.bs.modal', function () {
-            const cesiumContainer = document.getElementById('cesiumContainer');
-            if (cesiumContainer) {
-                cesiumContainer.innerHTML = '';
-            }
+            cleanupCesiumViewer();
+            // Reset the initialization flag to allow re-initialization
+            isMapInitialized = false;
         });
+
+    }
+    function cleanupCesiumViewer() {
+        if (viewer) {
+            try {
+                viewer.destroy();
+                console.log('Cesium viewer destroyed successfully');
+            } catch (err) {
+                console.warn("Error destroying Cesium viewer:", err);
+            }
+            viewer = null;
+        }
+
+        // Clear the container
+        const cesiumContainer = document.getElementById('cesiumContainer');
+        if (cesiumContainer) {
+            cesiumContainer.innerHTML = '';
+        }
     }
 
-    // Cesium 3D Map initialization
+    // Consolidated Cesium 3D Map initialization
     function initializeCesiumMap() {
         try {
             // Set Cesium access token
-            Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMmQzZjI5NS02MjhiLTRlODAtODdkOC0yMTZmYmMxZDhlNTQiLCJpZCI6MzM2MDAyLCJpYXQiOjE3NTYzMzk5MDR9.jRQFPFiOIsC9cA4zVYEup3aWQ5N0x4BuMlxsOMzycqI';
+            Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMmQzZjI5NS02MjhiLTRlODAtODdkOC0yMTZmYmMxZDhlNTQiLCJpZCI6MzM2MDAyLCJpYXQiOjE3NTYzMzk5MDR9.jRQFPFiOIsC9cA4zVYEup3aWQ5N0x4BuMlxsOMzycqI';
 
             const cesiumContainer = document.getElementById('cesiumContainer');
             if (!cesiumContainer) {
@@ -389,18 +396,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const viewer = new Cesium.Viewer('cesiumContainer', {
-                terrainProvider: Cesium.createWorldTerrain(),
-                homeButton: false,
-                sceneModePicker: false,
-                baseLayerPicker: false,
-                navigationHelpButton: false,
-                animation: false,
-                timeline: false,
-                fullscreenButton: false,
-                geocoder: false,
-                infoBox: true,
-                selectionIndicator: true
+            // Create viewer with proper terrain and imagery
+            viewer = new Cesium.Viewer('cesiumContainer', {
+                // Use default imagery provider instead of Bing Maps to avoid API key issues
+                terrain: Cesium.Terrain.fromWorldTerrain(),
             });
 
             const nigeriaStates = {
@@ -414,62 +413,103 @@ document.addEventListener('DOMContentLoaded', function () {
             Object.entries(nigeriaStates).forEach(([stateName, coords]) => {
                 // Add a circular highlight for each state
                 viewer.entities.add({
-                    name: stateName,
+                    name: `${stateName} State Coverage`,
                     position: Cesium.Cartesian3.fromDegrees(coords.lng, coords.lat),
                     ellipse: {
-                        semiMinorAxis: 100000,
-                        semiMajorAxis: 100000,
+                        semiMinorAxis: 80000,
+                        semiMajorAxis: 80000,
                         material: coords.color,
                         outline: true,
                         outlineColor: Cesium.Color.WHITE,
-                        height: 1000
+                        height: 0
                     },
                     label: {
                         text: stateName,
-                        font: '16pt Arial',
+                        font: '14pt Arial',
                         fillColor: Cesium.Color.WHITE,
                         outlineColor: Cesium.Color.BLACK,
                         outlineWidth: 2,
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        pixelOffset: new Cesium.Cartesian2(0, -20)
-                    }
+                        pixelOffset: new Cesium.Cartesian2(0, -10),
+                        scaleByDistance: new Cesium.NearFarScalar(10000, 1.0, 5000000, 0.5)
+                    },
+                    description: `<div style="padding: 10px;">
+                            <h4>${stateName} State</h4>
+                            <p>Active farmers and herders in this region are using Green Path to coordinate activities and prevent conflicts.</p>
+                            <ul>
+                                <li>GPS Land Mapping</li>
+                                <li>Route Coordination</li>
+                                <li>Direct Communication</li>
+                                <li>Conflict Prevention</li>
+                            </ul>
+                        </div>`
                 });
 
                 // Add farmers and herders for each state
-                for (let i = 0; i < 3; i++) {
-                    const randomLat = coords.lat + (Math.random() - 0.5) * 1.5;
-                    const randomLng = coords.lng + (Math.random() - 0.5) * 1.5;
+                for (let i = 0; i < 4; i++) {
+                    const randomLat = coords.lat + (Math.random() - 0.5) * 1.2;
+                    const randomLng = coords.lng + (Math.random() - 0.5) * 1.2;
 
                     viewer.entities.add({
-                        name: `Farmer ${stateName} ${i + 1}`,
+                        name: `Farmer - ${stateName} ${i + 1}`,
                         position: Cesium.Cartesian3.fromDegrees(randomLng, randomLat),
                         billboard: {
                             image: createFarmerIcon(),
-                            width: 32,
-                            height: 32,
+                            width: 28,
+                            height: 28,
                             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            scaleByDistance: new Cesium.NearFarScalar(1000, 1.0, 10000000, 0.3)
-                        }
+                            scaleByDistance: new Cesium.NearFarScalar(1000, 1.2, 5000000, 0.4)
+                        },
+                        description: `<div style="padding: 10px;">
+                                <h4><i class="fas fa-seedling"></i> Farmer in ${stateName}</h4>
+                                <p>This farmer is actively using Green Path to:</p>
+                                <ul>
+                                    <li>Map and register farmland boundaries</li>
+                                    <li>Coordinate with local herders</li>
+                                    <li>Access the marketplace</li>
+                                    <li>Report any conflicts early</li>
+                                </ul>
+                            </div>`
                     });
+                }
+                // Add herders for each state
+                for (let i = 0; i < 3; i++) {
+                    const randomLat = coords.lat + (Math.random() - 0.5) * 1.4;
+                    const randomLng = coords.lng + (Math.random() - 0.5) * 1.4;
 
                     viewer.entities.add({
-                        name: `Herder ${stateName} ${i + 1}`,
-                        position: Cesium.Cartesian3.fromDegrees(randomLng + 0.1, randomLat + 0.1),
+                        name: `Herder Group - ${stateName} ${i + 1}`,
+                        position: Cesium.Cartesian3.fromDegrees(randomLng, randomLat),
                         billboard: {
                             image: createHerderIcon(),
-                            width: 32,
-                            height: 32,
+                            width: 28,
+                            height: 28,
                             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            scaleByDistance: new Cesium.NearFarScalar(1000, 1.0, 10000000, 0.3)
-                        }
+                            scaleByDistance: new Cesium.NearFarScalar(1000, 1.2, 5000000, 0.4)
+                        },
+                        description: `<div style="padding: 10px;">
+                                <h4><i class="fas fa-horse"></i> Herder Group in ${stateName}</h4>
+                                <p>This herder group uses Green Path for:</p>
+                                <ul>
+                                    <li>Planning safe grazing routes</li>
+                                    <li>Communicating with farmers</li>
+                                    <li>Finding water sources</li>
+                                    <li>Avoiding restricted areas</li>
+                                </ul>
+                            </div>`
                     });
                 }
             });
 
             // Set camera to show Nigeria
-            viewer.camera.setView({
-                destination: Cesium.Cartesian3.fromDegrees(8.0, 9.0, 2000000)
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(8.5, 9.5, 1800000),
+                orientation: {
+                    heading: 0.0,
+                    pitch: -0.5,
+                    roll: 0.0
+                }
             });
 
             // Add click handler for entities
@@ -495,27 +535,91 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fallback map when Cesium is not available
-    function showFallbackMap() {
-        const cesiumContainer = document.getElementById('cesiumContainer');
-        if (cesiumContainer) {
-            cesiumContainer.innerHTML = `
-                <div class="fallback-map d-flex align-items-center justify-content-center h-100" style="background: linear-gradient(135deg, #28a745, #20c997);">
-                    <div class="text-center text-white">
-                        <i class="fas fa-map-marked-alt fa-4x mb-3"></i>
-                        <h4>Interactive Map</h4>
-                        <p>3D map requires Cesium library</p>
-                        <div class="mt-4">
-                            <div class="badge bg-warning text-dark me-2 mb-2">Benue State</div>
-                            <div class="badge bg-warning text-dark me-2 mb-2">Plateau State</div>
-                            <div class="badge bg-warning text-dark me-2 mb-2">Adamawa State</div>
-                            <div class="badge bg-warning text-dark me-2 mb-2">Nasarawa State</div>
-                            <div class="badge bg-warning text-dark me-2 mb-2">Taraba State</div>
+   function showFallbackMap() {
+    const cesiumContainer = document.getElementById('cesiumContainer');
+    if (cesiumContainer) {
+        cesiumContainer.innerHTML = `
+            <div class="fallback-map d-flex align-items-center justify-content-center h-100" 
+                 style="background: linear-gradient(135deg, #28a745, #20c997); position: relative;">
+                <div class="text-center text-white">
+                    <i class="fas fa-map-marked-alt fa-4x mb-3"></i>
+                    <h4>Interactive Coverage Map</h4>
+                    <p class="mb-3">Green Path operates across 5 Nigerian states</p>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <div class="card bg-dark text-white mb-2">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-map-pin text-warning me-2"></i>Benue State</span>
+                                        <div>
+                                            <span class="badge bg-success me-1">120+ Farmers</span>
+                                            <span class="badge bg-info">80+ Herders</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card bg-dark text-white mb-2">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-map-pin text-warning me-2"></i>Plateau State</span>
+                                        <div>
+                                            <span class="badge bg-success me-1">95+ Farmers</span>
+                                            <span class="badge bg-info">60+ Herders</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card bg-dark text-white mb-2">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-map-pin text-warning me-2"></i>Adamawa State</span>
+                                        <div>
+                                            <span class="badge bg-success me-1">150+ Farmers</span>
+                                            <span class="badge bg-info">90+ Herders</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card bg-dark text-white mb-2">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-map-pin text-warning me-2"></i>Nasarawa State</span>
+                                        <div>
+                                            <span class="badge bg-success me-1">85+ Farmers</span>
+                                            <span class="badge bg-info">50+ Herders</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card bg-dark text-white">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-map-pin text-warning me-2"></i>Taraba State</span>
+                                        <div>
+                                            <span class="badge bg-success me-1">110+ Farmers</span>
+                                            <span class="badge bg-info">70+ Herders</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="mt-3">
+                        <small class="text-light">3D map requires Cesium library</small>
+                    </div>
                 </div>
-            `;
-        }
+            </div>
+        `;
     }
+}
 
     // Create custom icons for farmers and herders
     function createFarmerIcon() {
@@ -571,6 +675,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return canvas.toDataURL();
     }
+
     // Feature cards interactive effects
     const featureCards = document.querySelectorAll('.feature-card');
     featureCards.forEach(card => {
@@ -953,6 +1058,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // Hero image placeholder click handler
     const heroImagePlaceholder = document.querySelector('.hero-image-placeholder');
     if (heroImagePlaceholder) {
         heroImagePlaceholder.style.cursor = 'pointer';
@@ -960,246 +1067,52 @@ document.addEventListener('DOMContentLoaded', function () {
             createAndShowMapModal();
         });
     }
-    // Initialize all features
-    setupLazyLoading();
-    setupFormValidation();
-    enhanceAccessibility();
 
-    // Console welcome message
-    console.log('%c🌱 Welcome to Green Path! 🌱', 'color: #28a745; font-size: 20px; font-weight: bold;');
-    console.log('%cBridging Communities, Growing Together', 'color: #ffc107; font-size: 14px;');
-    console.log('%cFor technical inquiries: hello@greenpath.ng', 'color: #6c757d; font-size: 12px;');
-});
-
-// Video Modal Setup
-document.addEventListener('DOMContentLoaded', function () {
-    // Create video modal if it doesn't exist
-    if (!document.querySelector('#videoModal')) {
-        const modalHTML = `
-        <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="videoModalLabel">Green Path Platform Demo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-0">
-                        <div class="video-placeholder" style="height: 300px; background: linear-gradient(135deg, #28a745, #20c997); display: flex; align-items: center; justify-content: center; color: white;">
-                            <div class="text-center">
-                                <i class="fas fa-play fa-4x mb-3"></i>
-                                <p class="mt-3 h5">Demo Video Coming Soon</p>
-                                <small>See how farmers and herders are using Green Path to build peace</small>
-                            </div>
+    // Video Modal Setup
+    function createVideoModal() {
+        // Create video modal if it doesn't exist
+        if (!document.querySelector('#videoModal')) {
+            const modalHTML = `
+            <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="videoModalLabel">Green Path Platform Demo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="p-4">
-                            <h6 class="fw-bold mb-3">What you'll see in this demo:</h6>
-                            <div class="demo-features">
-                                <span class="badge bg-success me-2 mb-2">GPS Land Mapping</span>
-                                <span class="badge bg-success me-2 mb-2">Route Planning</span>
-                                <span class="badge bg-success me-2 mb-2">Direct Messaging</span>
-                                <span class="badge bg-success me-2 mb-2">Marketplace Trading</span>
-                                <span class="badge bg-success me-2 mb-2">Conflict Resolution</span>
+                        <div class="modal-body p-0">
+                            <div class="video-placeholder" style="height: 300px; background: linear-gradient(135deg, #28a745, #20c997); display: flex; align-items: center; justify-content: center; color: white;">
+                                <div class="text-center">
+                                    <i class="fas fa-play fa-4x mb-3"></i>
+                                    <p class="mt-3 h5">Demo Video Coming Soon</p>
+                                    <small>See how farmers and herders are using Green Path to build peace</small>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h6 class="fw-bold mb-3">What you'll see in this demo:</h6>
+                                <div class="demo-features">
+                                    <span class="badge bg-success me-2 mb-2">GPS Land Mapping</span>
+                                    <span class="badge bg-success me-2 mb-2">Route Planning</span>
+                                    <span class="badge bg-success me-2 mb-2">Direct Messaging</span>
+                                    <span class="badge bg-success me-2 mb-2">Marketplace Trading</span>
+                                    <span class="badge bg-success me-2 mb-2">Conflict Resolution</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-    }
-
-    // Cesium 3D Map functionality
-    let viewer = null;
-    let isMapInitialized = false;
-
-    // Check if mapModal exists before adding event listener
-    const mapModal = document.getElementById('mapModal');
-    if (mapModal) {
-        mapModal.addEventListener('shown.bs.modal', function () {
-            if (!isMapInitialized && typeof Cesium !== 'undefined') {
-                initializeCesiumMap();
-                isMapInitialized = true;
-            } else if (typeof Cesium === 'undefined') {
-                console.warn('Cesium library not loaded. 3D map will not be available.');
-            }
-        });
-
-        mapModal.addEventListener('hidden.bs.modal', function () {
-            if (viewer) {
-                // Optionally destroy viewer to save memory
-                // viewer.destroy();
-                // viewer = null;
-                // isMapInitialized = false;
-            }
-        });
-    }
-
-    function initializeCesiumMap() {
-        try {
-            // Set Cesium access token
-            Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMmQzZjI5NS02MjhiLTRlODAtODdkOC0yMTZmYmMxZDhlNTQiLCJpZCI6MzM2MDAyLCJpYXQiOjE3NTYzMzk5MDR9.jRQFPFiOIsC9cA4zVYEup3aWQ5N0x4BuMlxsOMzycqI';
-
-            const cesiumContainer = document.getElementById('cesiumContainer');
-            if (!cesiumContainer) {
-                console.error('Cesium container not found');
-                return;
-            }
-
-            viewer = new Cesium.Viewer('cesiumContainer', {
-                terrainProvider: Cesium.createWorldTerrain(),
-                homeButton: false,
-                sceneModePicker: false,
-                baseLayerPicker: false,
-                navigationHelpButton: false,
-                animation: false,
-                timeline: false,
-                fullscreenButton: false,
-                geocoder: false
-            });
-
-            const nigeriaStates = {
-                'Benue': { lat: 7.3300, lng: 8.7320, color: Cesium.Color.YELLOW.withAlpha(0.7) },
-                'Plateau': { lat: 9.2000, lng: 9.2500, color: Cesium.Color.ORANGE.withAlpha(0.7) },
-                'Adamawa': { lat: 9.3200, lng: 12.3900, color: Cesium.Color.RED.withAlpha(0.7) },
-                'Nasarawa': { lat: 8.5500, lng: 8.1900, color: Cesium.Color.LIME.withAlpha(0.7) },
-                'Taraba': { lat: 8.0000, lng: 11.0000, color: Cesium.Color.CYAN.withAlpha(0.7) }
-            };
-
-            Object.entries(nigeriaStates).forEach(([stateName, coords]) => {
-                // Add a circular highlight for each state
-                viewer.entities.add({
-                    name: stateName,
-                    position: Cesium.Cartesian3.fromDegrees(coords.lng, coords.lat),
-                    ellipse: {
-                        semiMinorAxis: 100000,
-                        semiMajorAxis: 100000,
-                        material: coords.color,
-                        outline: true,
-                        outlineColor: Cesium.Color.WHITE,
-                        height: 1000
-                    },
-                    label: {
-                        text: stateName,
-                        font: '16pt Arial',
-                        fillColor: Cesium.Color.WHITE,
-                        outlineColor: Cesium.Color.BLACK,
-                        outlineWidth: 2,
-                        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        pixelOffset: new Cesium.Cartesian2(0, -20)
-                    }
-                });
-
-                // Add farmers and herders
-                for (let i = 0; i < 3; i++) {
-                    const randomLat = coords.lat + (Math.random() - 0.5) * 2;
-                    const randomLng = coords.lng + (Math.random() - 0.5) * 2;
-
-                    viewer.entities.add({
-                        name: `Farmer ${stateName} ${i + 1}`,
-                        position: Cesium.Cartesian3.fromDegrees(randomLng, randomLat),
-                        billboard: {
-                            image: createFarmerIcon(),
-                            width: 32,
-                            height: 32,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            scaleByDistance: new Cesium.NearFarScalar(1000, 1.0, 10000000, 0.3)
-                        }
-                    });
-
-                    viewer.entities.add({
-                        name: `Herder ${stateName} ${i + 1}`,
-                        position: Cesium.Cartesian3.fromDegrees(randomLng + 0.1, randomLat + 0.1),
-                        billboard: {
-                            image: createHerderIcon(),
-                            width: 32,
-                            height: 32,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            scaleByDistance: new Cesium.NearFarScalar(1000, 1.0, 10000000, 0.3)
-                        }
-                    });
-                }
-            });
-
-            // Set camera to show Nigeria
-            viewer.camera.setView({
-                destination: Cesium.Cartesian3.fromDegrees(8.0, 9.0, 2000000)
-            });
-
-            // Add click handler for entities
-            viewer.selectedEntityChanged.addEventListener(function (selectedEntity) {
-                if (selectedEntity && selectedEntity.name) {
-                    const stateInfoElement = document.querySelector('.state-info h6');
-                    if (stateInfoElement) {
-                        if (selectedEntity.name.includes('Farmer')) {
-                            stateInfoElement.innerHTML = '<i class="fas fa-seedling me-2 text-warning"></i>Farmer Selected';
-                        } else if (selectedEntity.name.includes('Herder')) {
-                            stateInfoElement.innerHTML = '<i class="fas fa-horse me-2 text-success"></i>Herder Selected';
-                        } else {
-                            stateInfoElement.innerHTML = `<i class="fas fa-map-pin me-2 text-info"></i>${selectedEntity.name} State`;
-                        }
-                    }
-                }
-            });
-
-        } catch (error) {
-            console.error('Error initializing Cesium map:', error);
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
         }
     }
 
-    // Create custom icons for farmers and herders
-    function createFarmerIcon() {
-        const canvas = document.createElement('canvas');
-        canvas.width = 32;
-        canvas.height = 32;
-        const ctx = canvas.getContext('2d');
+    // Initialize all features
+    setupLazyLoading();
+    setupFormValidation();
+    enhanceAccessibility();
+    createVideoModal();
 
-        // Draw farmer icon (green circle with seedling symbol)
-        ctx.fillStyle = '#28a745';
-        ctx.beginPath();
-        ctx.arc(16, 16, 14, 0, 2 * Math.PI);
-        ctx.fill();
+    // Console welcome message
 
-        // Add white border
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Add seedling emoji as text
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 12px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('🌱', 16, 16);
-
-        return canvas.toDataURL();
-    }
-
-    function createHerderIcon() {
-        const canvas = document.createElement('canvas');
-        canvas.width = 32;
-        canvas.height = 32;
-        const ctx = canvas.getContext('2d');
-
-        // Draw herder icon (brown circle with cow symbol)
-        ctx.fillStyle = '#8B4513';
-        ctx.beginPath();
-        ctx.arc(16, 16, 14, 0, 2 * Math.PI);
-        ctx.fill();
-
-        // Add white border
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Add cow emoji as text
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 12px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('🐄', 16, 16);
-
-        return canvas.toDataURL();
-    }
 });

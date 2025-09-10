@@ -23,11 +23,13 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
 }
+
 .navbar-dark-glass {
     background: rgba(17, 25, 40, 0.85) !important;
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 /* Hero Section */
 .hero-section {
     background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
@@ -47,6 +49,7 @@ body {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" patternUnits="userSpaceOnUse" width="4" height="4"><circle cx="2" cy="2" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
     animation: float 20s ease-in-out infinite;
 }
+
 .hero-title {
     text-shadow: var(--text-shadow);
     position: relative;
@@ -266,7 +269,7 @@ body {
 .step-number {
     position: absolute;
     top: -15px;
-    left: 50%;
+    left: 45%;
     transform: translateX(-50%);
     width: 40px;
     height: 40px;
@@ -287,10 +290,7 @@ body {
     transition: var(--transition);
 }
 
-.step-animation:hover .step-icon i {
-    transform: scale(1.2) rotate(10deg);
-    color: var(--gradient-end);
-}
+
 
 /* Marketplace Section */
 .marketplace-gradient {
@@ -624,77 +624,65 @@ body {
     background: var(--dark-green);
 }
 
-/* ENHANCED MOBILE RESPONSIVE STYLES */
+/* Cesium and Map Styles */
+#cesiumContainer {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-        #cesiumContainer {
-            width: 100%;
-            height: 500px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .state-info {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            max-width: 300px;
-            z-index: 1000;
-        }
-        
-        .state-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 10px;
-            background: rgba(40, 167, 69, 0.1);
-            border: 1px solid #28a745;
-            border-radius: 8px;
-        }
-        
-        .modal-lg-custom {
-            max-width: 90%;
-        }
-        
-        .floating {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .click-hint {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(255, 193, 7, 0.9);
-            color: #000;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-5px); }
-            60% { transform: translateY(-3px); }
-        }
-/* Large tablets and small desktops */
+.state-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 300px;
+    z-index: 1000;
+    height: 100px;
+}
+
+.state-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 10px;
+    background: rgba(40, 167, 69, 0.1);
+    border: 1px solid #28a745;
+    border-radius: 8px;
+}
+
+.modal-lg-custom {
+    max-width: 90%;
+}
+
+.click-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 193, 7, 0.9);
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: bounce 2s infinite;
+}
+
+/* RESPONSIVE BREAKPOINTS - IMPROVED */
+
+/* Large tablets and small desktops (1200px and below) */
 @media (max-width: 1200px) {
     .hero-title {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
     
     .display-3 {
@@ -704,98 +692,178 @@ body {
     .display-4 {
         font-size: 2.5rem;
     }
+    
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
-/* Tablets */
+/* Tablets (992px and below) */
 @media (max-width: 992px) {
-    .hero-section {
-        text-align: center;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .display-3 {
-        font-size: 2.5rem;
-    }
-    
-    .display-4 {
-        font-size: 2rem;
-    }
-    
-    .hero-image-placeholder,
-    .carousel-image-placeholder,
-    .marketplace-image-placeholder {
-        height: 350px;
-        margin-top: 2rem;
-    }
-    
-    .feature-card, .testimonial-card {
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-    
-    .step-card {
-        margin-bottom: 3rem;
-        text-align: center;
-    }
-    
-    .marketplace-features .feature-item {
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-    
-    .carousel-control-prev,
-    .carousel-control-next {
-        display: none;
-    }
-}
-
-/* Large phones and small tablets */
-@media (max-width: 768px) {
     /* Hero Section */
     .hero-section {
-        min-height: auto;
-        padding: 100px 0 50px;
+        text-align: center;
+        min-height: 80vh;
+        padding-top: 100px;
     }
     
     .hero-title {
-        font-size: 2rem;
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
         line-height: 1.2;
     }
     
     .display-3 {
-        font-size: 2rem;
+        font-size: 2.8rem;
     }
     
     .display-4 {
-        font-size: 1.75rem;
+        font-size: 2.2rem;
+    }
+    
+    .lead {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* Image placeholders */
+    .hero-image-placeholder,
+    .carousel-image-placeholder,
+    .marketplace-image-placeholder {
+        height: 320px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .image-overlay i {
+        font-size: 3.5rem;
+    }
+    
+    .image-overlay p {
+        font-size: 1.3rem;
+    }
+    
+    /* Feature cards */
+    .feature-card, .testimonial-card {
+        padding: 2rem 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .feature-icon {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Steps */
+    .step-card {
+        margin-bottom: 3rem;
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+    
+    /* Marketplace features */
+    .marketplace-features .feature-item {
+        margin-bottom: 2rem;
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .marketplace-features .feature-icon-small {
+        margin-bottom: 1rem;
+        margin-right: 0;
+    }
+    
+    /* Hide carousel controls on tablet */
+    .carousel-control-prev,
+    .carousel-control-next {
+        display: none;
+    }
+    
+    /* Trust badges */
+    .trust-indicators .d-flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .trust-badge {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+}
+
+/* Large phones and small tablets (768px and below) */
+@media (max-width: 768px) {
+    /* Container adjustments */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        min-height: auto;
+        padding: 120px 0 60px;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem;
+        line-height: 1.3;
+        margin-bottom: 1.5rem;
+    }
+    
+    .display-3 {
+        font-size: 2.2rem;
+    }
+    
+    .display-4 {
+        font-size: 1.8rem;
     }
     
     .lead {
         font-size: 1.1rem;
+        margin-bottom: 2rem;
     }
     
+    /* Hero stats */
+    .hero-stats .col-4 h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero-stats .col-4 small {
+        font-size: 0.85rem;
+    }
+    
+    /* Images */
     .hero-image-placeholder,
     .carousel-image-placeholder,
     .marketplace-image-placeholder {
-        height: 300px;
-        margin-top: 2rem;
+        height: 280px;
+        margin: 2rem 0;
+        border-radius: 15px;
     }
     
     .image-overlay i {
         font-size: 3rem;
+        margin-bottom: 1rem;
     }
     
     .image-overlay p {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .image-overlay small {
+        font-size: 0.9rem;
     }
     
     /* Buttons */
     .btn-lg {
-        padding: 0.75rem 1.5rem;
+        padding: 0.8rem 2rem;
         font-size: 1rem;
     }
     
@@ -804,23 +872,34 @@ body {
         margin-bottom: 1rem;
     }
     
+    .d-flex.gap-3 {
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+    
     /* Feature Cards */
     .feature-card, .testimonial-card {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
         margin-bottom: 2rem;
+        text-align: center;
     }
     
     .feature-icon {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         margin: 0 auto 1.5rem;
     }
     
     .feature-icon i {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
     
     /* Step Cards */
+    .step-card {
+        padding: 2rem 1rem;
+        margin-bottom: 2.5rem;
+    }
+    
     .step-icon i {
         font-size: 2.5rem;
     }
@@ -829,6 +908,7 @@ body {
         width: 35px;
         height: 35px;
         font-size: 1rem;
+        top: -12px;
     }
     
     /* Marketplace Features */
@@ -836,22 +916,36 @@ body {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        padding: 1rem;
     }
     
     .feature-icon-small {
         margin-bottom: 1rem;
         margin-right: 0;
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+        margin-left: 40%;
     }
-    
-    /* Navigation adjustments */
+
+    /* Navigation */
     .navbar-brand {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
     
     .navbar-nav .nav-link {
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
         text-align: center;
+        font-size: 1.1rem;
+    }
+    
+    .navbar-nav .btn {
+        margin-top: 1rem;
+        width: 100%;
+        max-width: 200px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     /* Hide complex animations on mobile */
@@ -863,12 +957,170 @@ body {
         animation: none;
     }
     
-    /* Success badges positioning */
+    /* Success badges */
     .success-badge {
-        top: 10px;
-        right: 10px;
-        padding: 0.25rem 0.75rem;
+        top: 15px;
+        right: 15px;
+        padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
+    }
+    
+    /* Modal adjustments */
+    .video-placeholder {
+        height: 280px;
+    }
+    
+    .video-overlay i {
+        font-size: 3.5rem;
+    }
+    
+    .modal-lg-custom {
+        max-width: 95%;
+    }
+    
+    #cesiumContainer {
+        height: 350px;
+    }
+    
+    .state-info {
+        bottom: 10px;
+        left: 10px;
+        padding: 10px;
+        max-width: 250px;
+        height: auto;
+        font-size: 0.9rem;
+    }
+    
+    .state-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .stat-item {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Small phones (576px and below) */
+@media (max-width: 576px) {
+    /* Typography */
+    .hero-title {
+        font-size: 1.8rem;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+    }
+    
+    .display-3 {
+        font-size: 1.8rem;
+    }
+    
+    .display-4 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .lead {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        padding: 100px 0 40px;
+    }
+    
+    /* Hero stats */
+    .hero-stats .col-4 h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .hero-stats .col-4 small {
+        font-size: 0.75rem;
+    }
+    
+    /* Image placeholders */
+    .hero-image-placeholder,
+    .carousel-image-placeholder,
+    .marketplace-image-placeholder {
+        height: 220px;
+        margin: 1.5rem 0;
+        border-radius: 12px;
+    }
+    
+    .image-overlay i {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .image-overlay p {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .image-overlay small {
+        font-size: 0.8rem;
+    }
+    
+    /* Buttons */
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .navbar-nav .btn {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+    
+    /* Cards */
+    .feature-card, .testimonial-card {
+        padding: 1.5rem 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 15px;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-icon i {
+        font-size: 1.5rem;
+    }
+    
+    /* Step cards */
+    .step-card {
+        padding: 1.5rem 0.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .step-icon i {
+        font-size: 2rem;
+    }
+    
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+        top: -10px;
+    }
+    
+    /* Custom quote */
+    .custom-quote {
+        padding: 0.8rem;
+        margin: 0.8rem 0;
+        font-size: 0.9rem;
+    }
+    
+    /* Avatar and testimonials */
+    .avatar-placeholder {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
     }
     
     /* Trust badges */
@@ -876,134 +1128,72 @@ body {
         display: block;
         text-align: center;
         margin: 0.5rem auto;
-        width: fit-content;
+        width: 90%;
+        max-width: 280px;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Footer adjustments */
+    .social-links {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+    
+    .social-link {
+        width: 38px;
+        height: 38px;
+        margin: 0.3rem;
+        font-size: 0.9rem;
+    }
+    
+    .contact-info p {
+        font-size: 0.9rem;
+        margin-bottom: 0.6rem;
     }
     
     /* Modal adjustments */
     .video-placeholder {
-        height: 250px;
-    }
-    
-    .video-overlay i {
-        font-size: 3rem;
-    }
-}
-
-/* Small phones */
-@media (max-width: 576px) {
-    /* Typography */
-    .hero-title {
-        font-size: 1.75rem;
-    }
-    
-    .display-3 {
-        font-size: 1.75rem;
-    }
-    
-    .display-4 {
-        font-size: 1.5rem;
-    }
-    
-    .lead {
-        font-size: 1rem;
-    }
-    
-    /* Hero stats */
-    .hero-stats .col-4 h3 {
-        font-size: 1.25rem;
-        margin-bottom: 0.25rem;
-    }
-    
-    .hero-stats .col-4 small {
-        font-size: 0.8rem;
-    }
-    
-    /* Image placeholders */
-    .hero-image-placeholder,
-    .carousel-image-placeholder,
-    .marketplace-image-placeholder {
-        height: 250px;
-    }
-    
-    .image-overlay i {
-        font-size: 2.5rem;
-    }
-    
-    .image-overlay p {
-        font-size: 1.1rem;
-    }
-    
-    .image-overlay small {
-        font-size: 0.9rem;
-    }
-    
-    /* Buttons */
-    .btn-lg {
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-    }
-    
-    /* Cards */
-    .feature-card, .testimonial-card {
-        padding: 1.25rem;
-    }
-    
-    .feature-icon {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .feature-icon i {
-        font-size: 1.25rem;
-    }
-    
-    /* Step cards */
-    .step-card {
-        padding: 1.5rem 1rem;
-    }
-    
-    .step-icon i {
-        font-size: 2rem;
-    }
-    
-    /* Custom quote */
-    .custom-quote {
-        padding: 0.75rem;
-        margin: 0.75rem 0;
-    }
-    
-    /* Avatar and testimonials */
-    .avatar-placeholder {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
-    /* Footer */
-    .social-links {
-        text-align: center;
-        margin-top: 1rem;
-    }
-    
-    .social-link {
-        width: 35px;
-        height: 35px;
-        margin: 0.25rem;
-    }
-    
-    /* Contact info */
-    .contact-info p {
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    /* Modal */
-    .video-placeholder {
         height: 200px;
+        border-radius: 10px;
     }
     
     .video-overlay i {
         font-size: 2.5rem;
+    }
+    
+    .modal-lg-custom {
+        max-width: 98%;
+        margin: 1rem;
+    }
+    
+    #cesiumContainer {
+        height: 300px;
+    }
+    
+    .state-info {
+        bottom: 5px;
+        left: 5px;
+        padding: 8px;
+        max-width: 200px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+    }
+    
+    .state-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    
+    .stat-item {
+        padding: 6px;
+        font-size: 0.75rem;
+    }
+    
+    .stat-item h6 {
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
     }
     
     /* Back to top button */
@@ -1013,39 +1203,212 @@ body {
         bottom: 15px;
         right: 15px;
     }
+    
+    /* Success badge mobile */
+    .success-badge {
+        top: 10px;
+        right: 10px;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    /* Section spacing */
+    .py-5 {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+    
+    /* Navbar adjustments */
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .navbar-toggler {
+        border: none;
+        padding: 0.5rem;
+    }
+    
+    /* Carousel indicators */
+    .custom-indicators {
+        margin-bottom: 1rem;
+    }
+    
+    .custom-indicators button {
+        width: 12px;
+        height: 12px;
+        margin: 0 3px;
+    }
 }
 
-/* Extra small phones */
-@media (max-width: 375px) {
+/* Extra small phones (480px and below) */
+@media (max-width: 480px) {
+    /* Typography */
     .hero-title {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        line-height: 1.4;
     }
     
     .display-3 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     
     .display-4 {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
+    }
+    
+    .lead {
+        font-size: 0.95rem;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        padding: 90px 0 30px;
+    }
+    
+    /* Images */
+    .hero-image-placeholder,
+    .carousel-image-placeholder,
+    .marketplace-image-placeholder {
+        height: 180px;
+        margin: 1rem 0;
+    }
+    
+    .image-overlay i {
+        font-size: 2rem;
+    }
+    
+    .image-overlay p {
+        font-size: 0.9rem;
+    }
+    
+    .image-overlay small {
+        font-size: 0.7rem;
+    }
+    
+    /* Cards */
+    .feature-card, .testimonial-card {
+        padding: 1.2rem 0.8rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-icon i {
+        font-size: 1.2rem;
+    }
+    
+    /* Step cards */
+    .step-card {
+        padding: 1.2rem 0.6rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .step-icon i {
+        font-size: 1.8rem;
+    }
+    
+    .step-number {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+    
+    /* Buttons */
+    .btn-lg {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Modal */
+    .video-placeholder {
+        height: 160px;
+    }
+    
+    .video-overlay i {
+        font-size: 2rem;
+    }
+    
+    #cesiumContainer {
+        height: 250px;
+    }
+    
+    .state-info {
+        display: none; /* Hide on very small screens */
+    }
+    
+    /* Trust badges */
+    .trust-badge {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.8rem;
+    }
+    
+    /* Footer */
+    .social-link {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+    
+    /* Container padding */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    /* Section spacing adjustment */
+    .py-5 {
+        padding-top: 2.5rem !important;
+        padding-bottom: 2.5rem !important;
+    }
+}
+
+/* Extra small phones (375px and below) */
+@media (max-width: 375px) {
+    .hero-title {
+        font-size: 1.4rem;
+    }
+    
+    .display-3 {
+        font-size: 1.4rem;
+    }
+    
+    .display-4 {
+        font-size: 1.2rem;
+    }
+    
+    .lead {
+        font-size: 0.9rem;
     }
     
     .hero-image-placeholder,
     .carousel-image-placeholder,
     .marketplace-image-placeholder {
-        height: 200px;
+        height: 160px;
     }
     
     .feature-card, .testimonial-card {
-        padding: 1rem;
+        padding: 1rem 0.6rem;
     }
     
     .step-card {
-        padding: 1.25rem 0.75rem;
+        padding: 1rem 0.5rem;
     }
     
     .btn-lg {
-        padding: 0.625rem 0.875rem;
-        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+    
+    #cesiumContainer {
+        height: 200px;
     }
 }
 
@@ -1053,20 +1416,29 @@ body {
 @media (max-height: 500px) and (orientation: landscape) {
     .hero-section {
         min-height: auto;
-        padding: 80px 0 30px;
+        padding: 60px 0 20px;
     }
     
     .hero-title {
-        font-size: 1.75rem;
-        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
     }
     
     .hero-image-placeholder {
-        height: 200px;
+        height: 150px;
     }
     
     .floating {
         animation: none;
+    }
+    
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    .step-card {
+        margin-bottom: 1rem;
     }
 }
 
@@ -1075,6 +1447,7 @@ body {
     /* Larger touch targets */
     .btn {
         min-height: 44px;
+        min-width: 44px;
     }
     
     .nav-link {
@@ -1084,19 +1457,31 @@ body {
         justify-content: center;
     }
     
-    /* Better spacing for readability */
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+    .social-link {
+        min-height: 44px;
+        min-width: 44px;
     }
     
-    /* Improved text readability */
-    p, .lead {
-        text-align: left;
+    /* Better text contrast for readability */
+    .text-muted {
+        color: #666 !important;
     }
     
-    .text-center p, .text-center .lead {
-        text-align: center;
+    /* Improved spacing for touch devices */
+    .feature-item {
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+    }
+    
+    /* Better button spacing */
+    .btn + .btn {
+        margin-top: 0.5rem;
+    }
+    
+    /* Improved form controls */
+    .form-control, .form-select {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
     }
 }
 
@@ -1113,13 +1498,20 @@ body {
     .trading-icons,
     .map-dots,
     .btn,
-    nav {
+    nav,
+    .modal,
+    .floating {
         display: none !important;
     }
     
     .hero-section {
         background: white !important;
         color: black !important;
+    }
+    
+    .py-5 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
     }
 }
 
@@ -1146,8 +1538,13 @@ body {
     .floating,
     .pulse-button,
     .glow,
-    .star-animation {
+    .star-animation,
+    .hero-animation {
         animation: none !important;
+    }
+    
+    .card-hover:hover {
+        transform: none !important;
     }
 }
 
@@ -1166,5 +1563,225 @@ body {
     .feature-card,
     .testimonial-card {
         border-width: 2px;
+        border-color: var(--primary-green);
+    }
+    
+    .text-muted {
+        color: #555 !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .bg-light {
+        background-color: white !important;
+    }
+    
+    
+    .text-dark {
+        color: white !important;
+    }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 768px) {
+    /* Prevent horizontal scroll */
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .col-lg-4,
+    .col-lg-6,
+    .col-lg-8 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    /* Better section spacing */
+    .mb-5 {
+        margin-bottom: 2rem !important;
+    }
+    
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .mb-3 {
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Improve readability */
+    h1, h2, h3, h4, h5, h6 {
+        line-height: 1.3;
+    }
+    
+    p {
+        line-height: 1.5;
+    }
+    
+    /* Better list spacing */
+    .list-unstyled li {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Carousel adjustments */
+    .carousel-item {
+        padding: 1rem 0;
+    }
+    
+    .blockquote {
+        font-size: 0.9rem;
+        margin: 1rem 0;
+    }
+    
+    .blockquote-footer {
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+    /* Disable expensive effects on mobile */
+    .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .feature-card:hover .feature-icon {
+        transform: scale(1.05);
+    }
+    
+    /* Simplify animations */
+    .pulse-button {
+        animation: none;
+    }
+    
+    .glow {
+        animation: none;
+        text-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+    }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+    
+    .hero-title {
+        font-size: 4.5rem;
+    }
+    
+    .display-3 {
+        font-size: 3.5rem;
+    }
+    
+    .display-4 {
+        font-size: 3rem;
+    }
+}
+
+/* Enhanced How It Works Icon Animations */
+
+/* Step 1 - Sign Up Animation */
+.step-card[data-step="1"]:hover .step-icon i {
+    animation: signUpBounce 1s ease-in-out;
+}
+
+@keyframes signUpBounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.2) rotate(-5deg); }
+    50% { transform: scale(1.3) rotate(5deg); }
+    75% { transform: scale(1.1) rotate(-2deg); }
+}
+
+/* Step 2 - Map Unfold Animation */
+.step-card[data-step="2"]:hover .step-icon i {
+    animation: mapUnfold 1.2s ease-in-out;
+}
+
+@keyframes mapUnfold {
+    0% { transform: scaleX(0.1) scaleY(0.1) rotate(0deg); }
+    25% { transform: scaleX(0.5) scaleY(0.3) rotate(5deg); }
+    50% { transform: scaleX(0.8) scaleY(0.7) rotate(-3deg); }
+    75% { transform: scaleX(1.1) scaleY(1.1) rotate(2deg); }
+    100% { transform: scaleX(1) scaleY(1) rotate(0deg); }
+}
+
+/* Step 3 - Eye Blink Animation */
+.step-card[data-step="3"]:hover .step-icon i {
+    animation: eyeBlink 1.5s ease-in-out;
+}
+
+@keyframes eyeBlink {
+    0%, 15%, 35%, 55%, 100% { transform: scaleY(1) scaleX(1); }
+    5%, 25%, 45% { transform: scaleY(0.1) scaleX(1.1); }
+    10%, 30%, 50% { transform: scaleY(1) scaleX(1); }
+}
+
+/* Step 4 - Handshake Animation */
+.step-card[data-step="4"]:hover .step-icon i {
+    animation: handshake 1s ease-in-out;
+    transform-origin: center bottom;
+}
+
+@keyframes handshake {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(15deg) scale(1.05); }
+    20%, 40%, 60%, 80% { transform: rotate(-15deg) scale(1.05); }
+}
+
+/* Enhanced step icon hover effects */
+
+
+/* Additional hover effects for the entire step card */
+.step-card:hover {
+    transform: translateY(-10px);
+    background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(248,249,250,0.95));
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border-radius: 20px;
+}
+
+.step-card:hover h5 {
+    color: var(--primary-green);
+    transform: translateY(-2px);
+}
+
+.step-card:hover p {
+    color: #555;
+    transform: translateY(-1px);
+}
+
+/* Staggered animation delays for better UX */
+.step-card[data-step="1"] {
+    animation-delay: 0.1s;
+}
+
+.step-card[data-step="2"] {
+    animation-delay: 0.2s;
+}
+
+.step-card[data-step="3"] {
+    animation-delay: 0.3s;
+}
+
+.step-card[data-step="4"] {
+    animation-delay: 0.4s;
+}
+
+/* Mobile optimization for step animations */
+@media (max-width: 768px) {
+    .step-card:hover .step-icon i {
+        animation-duration: 0.8s;
+    }
+    
+    .step-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .step-card:hover .step-number {
+        transform: translateX(-50%) scale(1.1);
     }
 }

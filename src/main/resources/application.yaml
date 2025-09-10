@@ -10,6 +10,16 @@ spring:
   application:
     name: GreenPath
   
+  # Task Scheduling Configuration
+  task:
+    scheduling:
+      pool:
+        size: 2  # Number of threads for scheduled tasks
+      thread-name-prefix: "cleanup-scheduler-"
+      shutdown:
+        await-termination: true
+        await-termination-period: 30s
+  
   # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/Test
@@ -22,7 +32,26 @@ spring:
       minimum-idle: 5
       idle-timeout: 300000
       max-lifetime: 1200000
-
+  
+  # Mail Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: alfybooze@gmail.com
+    password: yqfqxyhgktcquhim
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            trust: smtp.gmail.com
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    test-connection: true
+  
   # JPA/Hibernate Configuration
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -63,21 +92,142 @@ spring:
       secure: false
       same-site: lax
 
+  # File Upload Configuration
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 # Application-specific configuration
 app:
+  # Cleanup Configuration
+  cleanup:
+    interval: 300000  # Cleanup interval in milliseconds (300000 = 5 minutes)
+    pending-user-expiry-minutes: 15
+    verification-code-expiry-minutes: 15
+    enable-detailed-logging: true
+    
+  # WebSocket Configuration (if you're using WebSocket)
   websocket:
     endpoint: /ws
     destination-prefix: /app
     broker-prefix: /topic
+    
+  # Security Configuration
   security:
     remember-me:
-      key: ${REMEMBER_ME_KEY} 
-      token-validity-seconds: 1209600 
+      key: ${REMEMBER_ME_KEY:myDefaultSecretKey123456}
+      token-validity-seconds: 1209600  # 2 weeks
     session:
       maximum-sessions: 1
       prevent-login-if-maximum-exceeded: false
       expired-url: /login?expired
       invalid-session-url: /login?invalid
-  upload:
-    max-file-size: 10MB
-    max-request-size: 10MB
+
+# Consolidated Logging Configuration
+logging:
+  level:
+    # Your application packages
+    com.example.GreenPath.Controller.User_Controller: DEBUG
+    com.example.GreenPath.Controller: INFO
+    com.example.GreenPath.Service: DEBUG
+    com.example.GreenPath: INFO
+    
+    # Mail related
+    org.springframework.mail: DEBUG
+    javax.mail: DEBUG
+    
+    # Scheduling
+    org.springframework.scheduling: INFO
+    org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor: DEBUG
+    
+    # Security (reduce noise in logs)
+    org.springframework.security: WARN
+    
+    # Web requests (useful for debugging)
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    
+    # Hibernate/JPA (only if needed for debugging)
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    
+    # Root level
+    root: INFO
+    
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([%15.15t]){faint} %clr(%-5p){highlight} %clr([%30.30logger{29}]){cyan} %clr(:){faint} %m%n%wEx"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{50}] [%X{sessionId:-}] [%X{userEmail:-}] - %msg%n"
+    
+  file:
+    name: logs/greenpath.log
+    max-size: 10MB
+    max-history: 30
+    total-size-cap: 300MB
+
+# Management/Actuator endpoints (for monitoring)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,scheduledtasks,loggers,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: always
+    scheduledtasks:
+      enabled: true
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+  server:
+    port: 8081  # Different port for actuator endpoints
+
+# Profile-specific configurations
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+
+logging:
+  level:
+    com.example.GreenPath: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+app:
+  cleanup:
+    enable-detailed-logging: true
+    interval: 60000  # 1 minute for development
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+
+logging:
+  level:
+    com.example.GreenPath.Controller.User_Controller: INFO
+    com.example.GreenPath: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.springframework.mail: INFO
+    javax.mail: WARN
+    root: WARN
+    
+  file:
+    name: /var/log/greenpath/app.log
+    
+app:
+  cleanup:
+    enable-detailed-logging: false
+    interval: 300000  # 5 minutes for production
+
+server:
+  error:
+    include-stacktrace: never
+    include-message: never

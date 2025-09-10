@@ -2,6 +2,7 @@ package com.example.GreenPath.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -352,5 +353,28 @@ public class userService implements UserDetailsService {
         public long getHerders() { return herders; }
         public long getVerifiedUsers() { return verifiedUsers; }
         public long getActiveUsers() { return activeUsers; }
+    }
+     public void cleanupExpiredVerificationCodes() {
+        List<User> usersWithExpiredCodes = userRepository.findByVerificationCodeExpiryBefore(LocalDateTime.now());
+        for (User user : usersWithExpiredCodes) {
+            if (!user.isVerified()) {
+                // Delete unverified users with expired codes
+                userRepository.delete(user);
+            } else {
+                // Just clear the verification code for verified users
+                user.clearVerificationCode();
+                userRepository.save(user);
+            }
+        }
+    }
+    public User findByVerificationCode(String verificationCode) {
+        return userRepository.findByVerificationCode(verificationCode).orElse(null);
+    }
+    void storeTemporarySignup(Map<String, String> userData, String verificationCode) {
+    }
+    Map<String, String> verifyAndGetTemporarySignup(String email, String code) {
+        return null;
+    }
+    void clearTemporarySignup(String email) {
     }
 }

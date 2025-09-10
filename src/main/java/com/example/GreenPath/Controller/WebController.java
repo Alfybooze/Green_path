@@ -4,8 +4,6 @@ package com.example.GreenPath.Controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.example.GreenPath.Model.User;
 import com.example.GreenPath.Model.UserType;
 
@@ -21,18 +19,13 @@ public class WebController {
 
     // Login page
     @GetMapping("/login")
-    public String showLoginPage(Model model) {
-        model.addAttribute("user", new User());
+    public String showLoginPage() {
         return "login";
     }
 
     // Signup page
     @GetMapping("/signup")
-    public String showSignupPage(Model model, @RequestParam(value = "username", required = false) String username) {
-        model.addAttribute("user", new User());
-        if (username != null) {
-            model.addAttribute("existingUsername", username);
-        }
+    public String showSignupPage() {
         return "signup";
     }
 

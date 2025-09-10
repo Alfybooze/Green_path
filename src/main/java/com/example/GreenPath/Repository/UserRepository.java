@@ -102,4 +102,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Find users who haven't logged in for a specific period
     List<User> findByLastLoginBeforeOrLastLoginIsNull(LocalDateTime dateTime);
+      Optional<User> findByVerificationCode(String verificationCode);
+    
+    /**
+     * Find users with expired verification codes
+     */
+    List<User> findByVerificationCodeExpiryBefore(LocalDateTime dateTime);
+
 }

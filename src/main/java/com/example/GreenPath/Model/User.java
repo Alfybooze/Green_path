@@ -30,7 +30,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users", indexes = {
     @Index(name = "idx_email", columnList = "email"),
-    @Index(name = "idx_phone", columnList = "phone_number")
+    @Index(name = "idx_phone", columnList = "phone_number"),
+    @Index(name = "idx_verification_code", columnList = "verification_code")
 })
 @Data
 @NoArgsConstructor
@@ -65,7 +66,6 @@ public class User implements UserDetails {
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
-    
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false)
     private UserType userType;
@@ -86,6 +86,13 @@ public class User implements UserDetails {
     @Builder.Default
     @Column(name = "is_verified", nullable = false)
     private boolean verified = false;
+    
+    // Verification fields
+    @Column(name = "verification_code", length = 10)
+    private String verificationCode;
+    
+    @Column(name = "verification_code_expiry")
+    private LocalDateTime verificationCodeExpiry;
     
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -127,7 +134,7 @@ public class User implements UserDetails {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
-    
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
@@ -182,7 +189,17 @@ public class User implements UserDetails {
     public void updateLastLogin() {
         this.lastLogin = LocalDateTime.now();
     }
+    
+    // Verification helper methods
+    public boolean isVerificationCodeExpired() {
+        if (verificationCodeExpiry == null) {
+            return true;
+        }
+        return LocalDateTime.now().isAfter(verificationCodeExpiry);
+    }
+    
+    public void clearVerificationCode() {
+        this.verificationCode = null;
+        this.verificationCodeExpiry = null;
+    }
 }
-
-// Enum for User Types
-

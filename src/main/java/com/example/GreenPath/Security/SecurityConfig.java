@@ -46,9 +46,7 @@ public class SecurityConfig {
         http
         .authorizeHttpRequests(authz -> authz
             // Static resources first
-            .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
-            // Public endpoints
-            .requestMatchers("/", "/login", "/signup", "/user/signup").permitAll()
+            .requestMatchers("/", "/login", "/signup", "/user/signup","/css/**", "/js/**", "/images/**", "/favicon.ico","/user/verify-code","/user/resend-code","/user/cancel-registration").permitAll()
             // Role-based access
             .requestMatchers("/farmer/**").hasRole("FARMER")
             .requestMatchers("/herder/**").hasRole("HERDER")
@@ -100,7 +98,7 @@ public class SecurityConfig {
             
             // CSRF configuration
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/ws/**") // Disable CSRF for WebSocket
+                .ignoringRequestMatchers("/ws/**","/user/signup", "/user/verify-code", "/user/resend-code", "/user/cancel-registration") // Disable CSRF for major endpoints
             )
             
             // Headers configuration
